@@ -88,4 +88,4 @@ java -jar lessV8.jar -s sourcefile [-o outputfile] [-c]
 Limitations
 ===========
 * If you run multiple JVM then you must use different library locations
-* LessCompilerV8 isn't threadsafe but can accessed from different threads (synchronized needed)
+* LessCompilerV8 isn't threadsafe but can accessed from different threads (synchronization needed)
