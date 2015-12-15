@@ -84,3 +84,8 @@ java -jar lessV8.jar -s sourcefile [-o outputfile] [-c]
 -o outputfile | if you want write it to file otherwise it will print on console
 -c | compress css (minify)
 ```
+
+Limitations
+===========
+* If you run multiple JVM then you must use different library locations
+* LessCompilerV8 isn't threadsafe but can accessed from different threads (synchronized needed)
