@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="build" name="lessV8">
+	<!--this file was created by Eclipse Runnable JAR Export Wizard-->
+	<!--ANT 1.7 is required                                        -->
+	<!--define folder properties-->
+	<property name="dir.current" value="."/>
+	<property name="dir.build" value="${dir.current}/build"/>
+	<property name="dir.jarfile" value="${dir.current}/deploy"/>
+	<property name="dir.src" value="${dir.current}/src"/>
+	<property name="dir.resources" value="${dir.current}/resources"/>
+	<property name="jar.j2v8" value="j2v8_x86_64-3.1.6.jar"/>
+	<property name="jar.log4j" value="log4j.jar"/>
+	
+	
+	<path id="classpath.compile">
+		<pathelement location="${dir.current}/lib/${jar.j2v8}" />
+		<pathelement location="${dir.current}/lib/${jar.log4j}" />
+	</path>
+	
+	<target name="compile">
+		<delete dir="${dir.build}" />
+		<mkdir dir="${dir.build}"/>
+		<javac
+			includeantruntime="false"
+			compiler="modern"
+			srcdir="${dir.src}"
+			destdir="${dir.build}"
+			debug="on"
+			optimize="off"
+			deprecation="on"
+			classpathref="classpath.compile"
+			source="1.6"
+			target="1.6">
+		
+			<exclude name="**/Example.java" />
+		</javac>
+	</target>
+	
+	<target name="build" depends="compile">
+		<copy todir="${dir.build}">
+			<fileset dir="${dir.resources}">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+		<jar
+			destfile="${dir.jarfile}/lessV8.jar"
+			basedir="build">
+			<manifest>
+				<attribute name="Main-Class" value="de.otris.lessV8.LessCompilerCli" />
+				<attribute name="Class-Path" value=". lib/${jar.j2v8} lib/${jar.log4j}" />
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="deploy" depends="">
+		<delete dir="${dir.jarfile}/lib"/>
+		<mkdir dir="${dir.jarfile}/lib"/>
+		<copy file="${dir.current}/lib/${jar.j2v8}" todir="${dir.jarfile}/lib"/>
+		<copy file="${dir.current}/lib/${jar.log4j}" todir="${dir.jarfile}/lib"/>
+	</target>
+</project>
