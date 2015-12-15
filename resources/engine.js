@@ -26,7 +26,6 @@ FileManager.prototype.loadFile = function(filename, currentDirectory, options, e
 		try {
 			fullFilename = filename;
 			if (paths[i]) {
-				//fullFilename = path.join(paths[i], fullFilename);
 				fullFilename = paths[i] + fullFilename;
 			}
 			filenamesTried.push(fullFilename);
