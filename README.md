@@ -94,6 +94,24 @@ LessCompileOptions.getAsyncCallback();
 Interface LessCompileCallback
 onSuccess();
 onError(LessException);
+
+Interface Source
+String read() throws IOException;
+String getPath();
+
+FileSource(File)
+FileSource(String)
+HttpSource(URL)
+HttpSource(String)
+StringSource(String)
+
+Interface Result
+void write(String) throws IOException;
+
+FileResult(File)
+FileResult(String)
+StringResult()
+
 ```
 
 You can call it as cli too
