@@ -27,55 +27,73 @@ Linux:
 
 Usage
 =====
-You can look into [Example.java](https://github.com/bergi9/java-lessV8/commit/35e6a2f4d6630a279b1e74e58b8bfc81936e6a01).
-But the Example.java works synchronously. You can call them asynchronously too.
-
 ``` Java
-//create new instance
+// create new instance
 LessCompiler c = new LessCompilerV8();
 
-//change the J2V8 library location (in case if no file access):
+// change the J2V8 library location (in case if no file access):
 LessCompiler c = new LessCompilerV8("C:\temp");
 
-//synchronous call as string
-String result = c.compileLess(".foo { width: (1+1)px }");
+// initialize the compiler
+c.init();
 
-//synchronous call with file
-//it will import files with @imports automatically, yes even with dynamic imports
-V8FileSystem fs = new V8FileSystem();
-String source = fs.readFile("D:\\less\\main.less");
-String result = c.compileLess(source, "D:\\less\\main.less");
+Source source = new StringSource(".foo { width: (1+1)px; }");
+Result result = new StringResult();
 
-//synchronous call with file and compression
-String result = c.compileLess(source, "D:\\less\\main.less", true);
+// will call it synchronously (default)
+c.compile(source, result);
 
-//asynchronous call
-LessCallback callback = new LessCallback()
+String css = result.getContent();
+
+// asynchronous version
+LessCompileCallback callback = new LessCompileCallback()
 {
 	@Override
-	public void onLessCompiled(String css, LessException e)
+	public void onSuccess()
 	{
-		//Code
+		System.out.println(result.getContent());
 	}
-};
-c.compileLessAsync(source, file, compress, callback);
+	
+	@Override
+	public void onError(LessException e)
+	{
+		System.out.println(e.getMessage());
+	}
+}
+LessCompileOptions options = new LessCompileOptions();
+options.setAsync(true);
+options.setAsyncCallback(callback);
+c.compile(source, result, options);
 
 // API
 new LessCompilerV8();
 new LessCompilerV8(libraryLocation);
+LessCompiler.init();
+LessCompiler.compileLess(Source, Result);
+LessCompiler.compileLess(Source, Result, LessCompileOptions);
+LessCompiler.destroy();
 
-LessCompiler.compileLess(source);
-LessCompiler.compileLess(source, compress);
-LessCompiler.compileLess(source, file);
-LessCompiler.compileLess(source, file, compress);
-LessCompiler.compileLessAsync(source, callback);
-LessCompiler.compileLessAsync(source, compress, callback);
-LessCompiler.compileLessAsync(source, file, callback);
-LessCompiler.compileLessAsync(source, file, compress, callback);
+new LessCompileOptions();
+LessCompileOptions.addGlobalVar(String, String);
+LessCompileOptions.removeGlobalVar(String);
+LessCompileOptions.getGlobalVar(String);
+LessCompileOptions.addModifyVar(String, String);
+LessCompileOptions.removeModifyVar(String);
+LessCompileOptions.getModifyVar(String);
+LessCompileOptions.setCompress(boolean);
+LessCompileOptions.isCompress();
+LessCompileOptions.setStrictMath(boolean);
+LessCompileOptions.isStrictMath();
+LessCompileOptions.setRelativeUrls(boolean);
+LessCompileOptions.isRelativeUrls();
+LessCompileOptions.setAsync(boolean);
+LessCompileOptions.isAsync();
+LessCompileOptions.setAsyncCallback(LessCompileCallback);
+LessCompileOptions.getAsyncCallback();
 
-V8FileSystem.exists(file);
-V8FileSystem.readFile(file);
-V8FileSystem.writeFile(file, content);
+Interface LessCompileCallback
+onSuccess();
+onError(LessException);
 ```
 
 You can call it as cli too
