@@ -7,8 +7,8 @@
 	<property name="dir.build" value="${dir.current}/build"/>
 	<property name="dir.jarfile" value="${dir.current}/deploy"/>
 	<property name="dir.src" value="${dir.current}/src"/>
-	<property name="dir.resources" value="${dir.current}/resources"/>
-	<property name="jar.j2v8" value="j2v8_x86_64-3.1.6.jar"/>
+	<property name="dir.resource" value="${dir.current}/resource"/>
+	<property name="jar.j2v8" value="j2v8-3.1.6.jar"/>
 	<property name="jar.log4j" value="log4j.jar"/>
 	
 	
@@ -38,7 +38,7 @@
 	
 	<target name="build" depends="compile">
 		<copy todir="${dir.build}">
-			<fileset dir="${dir.resources}">
+			<fileset dir="${dir.resource}">
 				<include name="**/*" />
 			</fileset>
 		</copy>
@@ -46,7 +46,7 @@
 			destfile="${dir.jarfile}/lessV8.jar"
 			basedir="build">
 			<manifest>
-				<attribute name="Main-Class" value="de.otris.lessV8.LessCompilerCli" />
+				<attribute name="Main-Class" value="com.bergi9.less.v8.LessCompilerCli" />
 				<attribute name="Class-Path" value=". lib/${jar.j2v8} lib/${jar.log4j}" />
 			</manifest>
 		</jar>
