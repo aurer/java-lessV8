@@ -19,7 +19,7 @@ public class StringSource extends AbstractSource
 	
 	private void checkImports() throws IOException
 	{
-		if(content.contains("@import") && (path != null || path.isEmpty()))
+		if(content.contains("@import") && (path == null || path.isEmpty()))
 		{
 			throw new IOException("Path cannot be null or empty if there are imports");
 		}
